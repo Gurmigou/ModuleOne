@@ -379,5 +379,156 @@ int main()
 }
 
 ```
-### Тест
-```ааааАААА```
+### Написати функцію, яка в кінець не порожнього зв'язного списку додає всі його елементи, розташовуючи їх у зворотньому порядку. Наприклад: (1, 2, 3) => (1, 2, 3, 3, 2, 1).
+```
+#include <iostream>
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void addToEnd(Node *head);
+void printList(Node *head){
+    while(head != nullptr) {
+        std::cout << head->data << " ";
+        head = head->next;
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    Node c{3, nullptr};
+    Node b{2, &c};
+    Node a{1, &b};
+
+    printList(&a);
+    addToEnd(&a);
+    printList(&a);
+    return 0;
+}
+
+void addToEnd(Node *head){
+    Node* temp = nullptr;
+
+    while(head->next != nullptr){
+        Node* additionalListHead = new Node;
+        additionalListHead->data = head->data;
+        additionalListHead->next = temp;
+        temp = additionalListHead;
+        head = head->next;
+    }
+
+    Node* additionalListHead = new Node;
+    additionalListHead->data = head->data;
+    additionalListHead->next = temp;
+    head->next = additionalListHead;
+}
+```
+
+### До лінійного списку F з m цілих чисел, більшість елементів якого дорівнюють 0, застосоване стисле зв'язане зберігання. Написати функцію для перевірки чи є серед елементів з номерами інтервалу [i,j] значення v.
+```
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int num;
+    int data;
+    Node* next;
+};
+
+bool isInRange(int v, Node* head, int i, int j);
+
+int main() {
+    Node d{10, 1, nullptr};
+    Node c{5, 32, &d};
+    Node b{2, 3, &c};
+    Node a{1, 3, &b};
+
+    int v, i, j;
+    cout << "V: ";
+    cin >> v;
+    cout << "i: ";
+    cin >> i;
+    cout << "j: ";
+    cin >> j;
+    cout << isInRange(v, &a, i, j) << endl;
+
+    return 0;
+}
+
+bool isInRange(int v, Node* head, int i, int j){
+    int nodesInRange = 0;
+    while(head != nullptr){
+        if(head->num >= i && head->num <= j){
+            if(head->data == v) return true;
+            nodesInRange++;
+        }
+        head = head->next;
+    }
+    if(v == 0 && nodesInRange < j-i) return true;
+    return false;
+}
+```
+
+### Лінійний список F цілих чисел зберігається як послідовно-зв'язний індексний список так, що числа, які мають однакову останню цифру, розміщуються в один підсписок. Написати функцію, яка вилучає зі до списку елемент зі значенням v, якщо такий елемент у списку присутній.
+```
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void deleteV(Node **a, int v);
+void printList(Node* head){
+    while(head != nullptr){
+        cout << head->data << " ";
+        head=head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* xx[10];
+    xx[1] = nullptr;
+
+    xx[0] = new Node; xx[0]->data = 110; xx[0]->next = new Node{120, nullptr};
+    xx[1] = new Node; xx[1]->data = 21; xx[1]->next = new Node{41, nullptr};
+    xx[2] = new Node; xx[2]->data = 12; xx[2]->next = new Node{222, nullptr};
+    xx[3] = new Node; xx[3]->data = 3; xx[3]->next = new Node{33, nullptr};
+    xx[4] = new Node{14, nullptr};
+    xx[5] = new Node{65, nullptr};
+    xx[6] = new Node{66, nullptr};
+    xx[7] = new Node{107, nullptr};
+    xx[8] = new Node{1488, nullptr};
+    xx[9] = new Node{69, nullptr};
+
+    for (int i = 0; i < 10; ++i) {
+        printList(xx[i]);
+    }
+    deleteV(xx, 222); cout << endl;
+    for (int i = 0; i < 10; ++i) {
+        printList(xx[i]);
+    }
+
+    return 0;
+}
+
+void deleteV(Node **a, int v){
+    Node *head = a[v%10];
+    Node *previous = nullptr;
+    while(head != nullptr){
+        if(head->data == v){
+            if(previous != nullptr) previous->next = head->next;
+            if(previous == nullptr) a[v%10] = head->next;
+            delete head;
+
+            return;
+        }
+        previous = head;
+        head = head->next;
+    }
+}
+```
