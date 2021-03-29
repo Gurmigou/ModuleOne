@@ -455,6 +455,65 @@ int main() {
     return 0;
 }
 ```
+Написати функцію для копіювання двосторонньої черги, реалізованої списком з двома звязками.
+
+#include <iostream>
+using namespace std;
+struct Node
+{
+    int data;
+    Node *previous;
+    Node *next;
+};
+struct Deque
+{
+    Node* front;
+    Node* rear;
+};
+Deque* CopyDeque(Deque* ToBeCopied){
+    Deque* CopiedDeque = new Deque();
+    int CopiedData;
+    Node* NewPrevious= nullptr;
+    while (ToBeCopied->front!= nullptr){
+        Node* NewNode= new Node();
+        CopiedData=ToBeCopied->front->data;
+        NewNode->data=CopiedData;
+        NewNode->previous=NewPrevious;
+        NewPrevious=NewNode;
+        if (NewNode->previous != nullptr) {
+            NewNode->previous->next=NewNode;
+        }
+        ToBeCopied->front=ToBeCopied->front->next;
+    }
+    NewPrevious->next = nullptr;
+    CopiedDeque->rear=NewPrevious;
+    Node* NewFront = CopiedDeque->rear;
+    while(NewFront->previous!=nullptr){
+        NewFront=NewFront->previous;
+    }
+    CopiedDeque->front = NewFront;
+    return CopiedDeque;
+}
+int main() {
+    Node c { 12, nullptr, nullptr };
+    Node b{ 25, nullptr, &c };
+    Node a{ 155, nullptr, &b };
+
+    c.previous = &b;
+    b.previous = &a;
+
+    Deque deque{&a, &c};
+
+    Deque* copy = CopyDeque(&deque);
+    Node* curr = copy->front;
+
+    while (curr != nullptr) {
+        cout << curr->data << " ";
+        curr = curr->next;
+    }
+
+    return 0;
+}
 
 ### Наступний метод: спочатку послідовність складається з одного елемента. В послідовність здійснюємо додавання, використовуючи «двійковий пошук» місця. Запропонувати відповідну структуру для швидкого бінарного пошуку та вставки. Бажана часова складність O(log n)
 ???
