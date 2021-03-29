@@ -515,7 +515,86 @@ int main() {
     return 0;
 }
 ```
+### Написати функцію для побудови послідовно-звязного індексного зберігання розрідженої матриці В [10;40]
+```
+#include <iostream>
+using namespace std;
+const int length = 10, height =40 ;
+struct ListItem {
+    int i, j;
+    int data;
+    ListItem *next;
 
+    ListItem() {};
+
+    ListItem(int, int, int);
+};
+    void insert(ListItem **, int, ListItem *);
+    void print(ListItem **, int);
+int main()
+{
+    ListItem** roots = new ListItem*[height];
+    for (int i = 0; i < height; ++i) {
+        roots[i] = new ListItem[length];
+        roots[i] = nullptr;
+    }
+    int arr[height][length];
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < length; ++j)
+            cin >> arr[i][j];
+    }
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < length; ++j) {
+            if (arr[i][j] != 0) {
+                ListItem* newNode = new ListItem(i, j, arr[i][j]);
+                insert(roots, length, newNode);
+            }
+        }
+    }
+    cout << endl << endl;
+    print(roots, length);
+    delete[] roots;
+
+
+void insert(ListItem** roots, int len, ListItem* newNode) {
+    insert(&roots[newNode->i], newNode);
+}
+
+void print(ListItem** roots, int len) {
+    for (int i = 0; i < len; ++i) {
+        print(roots[i]);
+        cout << endl;
+    }
+}
+}
+```
+### Написати функцію, яка у списку, що зберігається у звязаному циклічному представленні, з кожної групи сусідніх однакових елементів залишає лише один
+```
+struct Node {
+   int data;
+   Node* next;
+};
+
+Node* DeleteSimilarItems(Node* head){
+    Node* current = head;
+    while (current->next!=head) {
+        if (current->next->data == current->data) {
+            Node *next = current->next->next;
+            delete current->next;
+            current->next = next;
+        } else {
+            current = current->next;
+        }
+    }
+    if(current!=head&&current->data==head->data){
+        Node* NextHead=head->next;
+        delete head;
+        current->next=NextHead;
+        head=NextHead;
+    }
+    return head;
+}
+```
 ### Наступний метод: спочатку послідовність складається з одного елемента. В послідовність здійснюємо додавання, використовуючи «двійковий пошук» місця. Запропонувати відповідну структуру для швидкого бінарного пошуку та вставки. Бажана часова складність O(log n)
 ???
 
