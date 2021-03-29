@@ -138,3 +138,96 @@ Node* DeleteSimilarItems(Node* head){
     return head;
 }
 ```
+### В елементах списку, що зберігається у зв'язному циклічному представленні, розміщенні цілі числа. Написати функцію, що вилучає зі списку всі від'ємні значення.
+```
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void AddNode(struct Node** head, int data)
+{
+    struct Node* first= (struct Node*)malloc(sizeof(struct Node));
+
+    struct Node* temp = *head;
+    first->data = data;
+    first->next = *head;
+
+    if (*head != nullptr) {
+
+        while (temp->next != *head) temp = temp->next;
+        temp->next = first;
+
+    }
+    else {
+        first->next = first;
+    }
+
+    *head = first;
+}
+
+void deleteNode(Node* head_ref, Node* deleted)
+{
+    struct Node* temp = head_ref;
+
+    if (head_ref == deleted)
+        head_ref = deleted->next;
+
+    while (temp->next != deleted) {
+        temp = temp->next;
+    }
+
+    temp->next = deleted->next;
+
+    free(deleted);
+
+}
+
+void DeleteNegativeNumbers(Node* head)
+{
+    struct Node* node = head;
+    struct Node* next;
+
+    do {
+
+        if (node->data<0)
+            deleteNode(head, node);
+
+        next = node->next;
+        node = next;
+
+    } while (node != head);
+}
+
+void printList(struct Node* head)
+{
+    struct Node* temp = head;
+    if (head != nullptr) {
+        do {
+            cout<< temp->data<<" ";
+            temp = temp->next;
+        } while (temp != head);
+    }
+}
+
+int main()
+{
+    struct Node* head = nullptr;
+
+    AddNode(&head, 6);
+    AddNode(&head, -5);
+    AddNode(&head, 12);
+    AddNode(&head, -3);
+    AddNode(&head, -1);
+    AddNode(&head, 9);
+
+    DeleteNegativeNumbers(head);
+
+    printList(head);
+
+    return 0;
+}
+```
