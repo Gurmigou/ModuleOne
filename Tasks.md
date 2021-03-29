@@ -231,7 +231,7 @@ int main()
     return 0;
 }
 ```
-### До лінійного списку F з m цілих чисел, більшість елементів якого дорівнюють 0, застосоване стисле зв'язане зберігання. Написати функцію для визначення кількості елементів із значенням 0,  номери яких належать інтервалу [i,j].
+### До лінійного списку F з m цілих чисел, більшість елементів якого дорівнюють 0, застосоване стисле зв'язане зберігання. Написати функцію для визначення кількості елементів ІЗ ЗНАЧЕННЯМ 0,  номери яких належать інтервалу [i,j].
 ```
 #include <iostream>
 using namespace std;
@@ -532,3 +532,48 @@ void deleteV(Node **a, int v){
     }
 }
 ```
+
+### До лінійного списку F з m цілих чисел, більшість елементів якого дорівнюють 0, застосоване стисле зв'язане зберігання. Написати функцію для визначення кількості елементів З НЕВІД'ЄМНИМ ЗНАЧЕННЯМ,  номери яких належать інтервалу [i,j].
+```
+#include <exception>
+
+struct Pair {
+    int index;
+    int value;
+
+    Pair(int index, int value) : index(index), value(value) {}
+};
+
+struct Node {
+    Node* next;
+    Pair value;
+
+    Node(Node *next, const Pair &value) : next(next), value(value) {}
+};
+
+
+int getNumOfNonNegativeNumbers(Node* node, int i, int j) {
+    if (i > j)
+        throw exception();
+    if (i < 0)
+        i = 0;
+    int numOfNonNegative;
+    int toSubtractNodes = 0;
+    bool iterate = true;
+    while (iterate) {
+        if (node->next == nullptr) {
+            j = node->value.index;
+            iterate = false;
+        }
+        if (node->value.index > j)
+            break;
+        if (node->value.index >= i && node->value.value < 0)
+            toSubtractNodes++;
+        node = node->next;
+    }
+    numOfNonNegative = j - i + 1 - toSubtractNodes;
+
+    return numOfNonNegative;
+}
+```
+
