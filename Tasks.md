@@ -231,3 +231,63 @@ int main()
     return 0;
 }
 ```
+### До лінійного списку F з m цілих чисел, більшість елементів якого дорівнюють 0, застосоване стисле зв'язане зберігання. Написати функцію для визначення кількості елементів із значенням 0,  номери яких належать інтервалу [i,j].
+```
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int num;
+    int data;
+    Node* next;
+};
+
+int isInRange(Node* head, int i, int j);
+
+int main() {
+    Node d{10, 1, nullptr};
+    Node c{5, 32, &d};
+    Node b{2, 3, &c};
+    Node a{1, 3, &b};
+
+    int i, j;
+
+    cout << "i: ";
+    cin >> i;
+    cout << "j: ";
+    cin >> j;
+    cout << isInRange(&a, i, j) << endl;
+
+    return 0;
+}
+
+int isInRange(Node* head, int i, int j){
+
+    int nodesInRange = 0;
+    int x=0;
+
+    while(head != nullptr){
+
+        if (j>i) {
+        if(head->num >= i && head->num <= j){
+            nodesInRange++;
+        }
+        
+        head = head->next;
+        
+        } else {
+
+            swap(i,j);
+            if(head->num >= i && head->num <= j){
+                nodesInRange++;
+            }
+
+            head = head->next;
+        }
+
+    }
+
+   return j-nodesInRange-i+1;
+
+}
+```
